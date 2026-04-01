@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>POPP'EM — Case Study</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,700;1,400&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #141414;
+  --panel:   #1e1e1e;
+  --border:  #2e2e2e;
+  --accent:  #5D74B3;
+  --accent2: #b9b0ff;
+  --accent3: #e8b86d;
+  --text:    #e1e1e1;
+  --muted:   #888888;
+  --muted2:  #aaaaaa;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 13px;
+  line-height: 1.75;
+  padding: 0;
+  overflow-x: hidden;
+  overflow-y: visible;
+}
+
+.page { max-width: 860px; margin: 0 auto; padding: 56px 28px 160px; }
+
+/* ── Header ── */
+.cs-header { margin-bottom: 56px; border-bottom: 1px solid var(--border); padding-bottom: 32px; }
+
+.cs-eyebrow {
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.cs-title {
+  font-family: 'DM Serif Display', serif;
+  font-style: italic;
+  font-size: clamp(36px, 7vw, 64px);
+  color: var(--accent);
+  line-height: 1.05;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+
+.cs-subtitle { font-size: 13px; color: var(--muted2); margin-bottom: 24px; }
+
+.cs-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+.cs-meta-item { display: flex; flex-direction: column; gap: 3px; }
+.cs-meta-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.cs-meta-value { font-size: 12px; color: var(--text); }
+
+/* ── Section labels ── */
+.sec-label {
+  font-size: 8px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.sec-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.sec-num { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 11px; color: var(--accent); margin-right: 4px; }
+
+h2 { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 26px; color: var(--text); letter-spacing: -0.3px; margin-bottom: 16px; line-height: 1.2; }
+h3 { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; margin-top: 32px; }
+
+p { margin-bottom: 16px; color: var(--text); }
+p.lede { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 18px; line-height: 1.6; color: var(--muted2); margin-bottom: 28px; }
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.section { margin-bottom: 64px; }
+
+/* ── Pull quote ── */
+.pullquote { border-left: 2px solid var(--accent); padding: 16px 24px; margin: 32px 0; background: rgba(93,116,179,0.05); }
+.pullquote p { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 17px; line-height: 1.6; color: var(--muted2); margin: 0; }
+
+/* ── Workflow ── */
+.workflow { display: flex; flex-direction: column; gap: 2px; margin: 28px 0; }
+.wf-step { display: grid; grid-template-columns: 48px 1fr; gap: 0; align-items: stretch; }
+.wf-num { display: flex; flex-direction: column; align-items: center; padding-top: 14px; }
+.wf-num-inner { width: 28px; height: 28px; border: 1px solid var(--accent); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: var(--accent); flex-shrink: 0; }
+.wf-line { flex: 1; width: 1px; background: var(--border); margin: 4px auto 0; }
+.wf-step:last-child .wf-line { display: none; }
+.wf-body { padding: 10px 0 28px 16px; }
+.wf-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent); margin-bottom: 8px; }
+.wf-body p { margin-bottom: 8px; font-size: 12px; color: var(--muted2); }
+.wf-body p:last-child { margin-bottom: 0; }
+
+/* ── Tool pills ── */
+.tools { display: flex; gap: 6px; flex-wrap: wrap; margin: 16px 0; }
+.tool-pill { background: var(--panel); border: 1px solid var(--border); border-radius: 2px; padding: 4px 10px; font-size: 10px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted2); }
+.tool-pill.blue   { border-color: rgba(93,116,179,0.4); color: var(--accent); }
+.tool-pill.purple { border-color: rgba(185,176,255,0.4); color: var(--accent2); }
+.tool-pill.amber  { border-color: rgba(232,184,109,0.4); color: var(--accent3); }
+
+/* ── Asset placeholder ── */
+.asset-slot { background: var(--panel); border: 1px dashed var(--border); border-radius: 2px; padding: 32px 24px; text-align: center; margin: 24px 0; color: var(--muted); font-size: 10px; letter-spacing: 2px; text-transform: uppercase; }
+.asset-slot .asset-label { color: var(--muted2); margin-top: 6px; font-size: 11px; font-style: italic; }
+
+/* ── Asset sheet two-up ── */
+.asset-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+@media (max-width: 580px) { .asset-grid { grid-template-columns: 1fr; } }
+.asset-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.asset-wrap img { display: block; width: 100%; height: auto; }
+.asset-caption { padding: 8px 12px; font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); border-top: 1px solid var(--border); }
+
+/* ── Vimeo ── */
+.vimeo-wrap { position: relative; padding-bottom: 56.25%; height: 0; margin: 16px 0; background: var(--panel); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.vimeo-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+.vimeo-caption { font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-top: -8px; margin-bottom: 16px; padding-left: 2px; }
+
+/* ── Embedded iframe (data binding case study) ── */
+.cs-embed { margin: 28px 0; border: 1px solid var(--border); border-radius: 2px; overflow: hidden; }
+.cs-embed-label { background: var(--panel); border-bottom: 1px solid var(--border); padding: 8px 16px; font-size: 9px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.cs-embed-label::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+.cs-embed iframe { display: block; width: 100%; border: 0; }
+
+/* ── Data binding cards ── */
+.binding-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 28px 0; }
+@media (max-width: 600px) { .binding-grid { grid-template-columns: 1fr; } }
+.binding-card { background: var(--panel); border: 1px solid var(--border); border-radius: 2px; padding: 16px 20px; }
+.binding-card .bc-tag { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.binding-card .bc-label { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 15px; color: var(--accent); margin-bottom: 8px; line-height: 1.3; }
+.binding-card p { font-size: 11px; color: var(--muted2); margin-bottom: 0; line-height: 1.65; }
+
+/* ── Recognition ── */
+.recognition { background: var(--panel); border: 1px solid rgba(93,116,179,0.3); border-radius: 2px; padding: 20px 24px; margin: 28px 0; display: flex; align-items: flex-start; gap: 16px; }
+.rec-indicator { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex-shrink: 0; margin-top: 5px; }
+.rec-label { font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+.rec-body p { font-size: 12px; color: var(--muted2); margin: 0; }
+
+/* ── Footer ── */
+.cs-footer { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; }
+.cs-footer p { font-size: 10px; color: var(--muted); margin: 0; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header class="cs-header">
+    <div class="cs-eyebrow">Case Study &mdash; Studio David Preli &mdash; 2026</div>
+    <h1 class="cs-title">POPP&rsquo;EM</h1>
+    <p class="cs-subtitle">A browser and mobile game built in RIVE &mdash; whack-a-mole, dystopia, and one very stressed secret agent</p>
+    <div class="cs-meta">
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Engine</span>
+        <span class="cs-meta-value">RIVE</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Platform</span>
+        <span class="cs-meta-value">Browser &amp; Mobile</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Duration</span>
+        <span class="cs-meta-value">59 seconds</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Pipeline</span>
+        <span class="cs-meta-value">Illustrator &rarr; RIVE &rarr; Logic Pro</span>
+      </div>
+      <div class="cs-meta-item">
+        <span class="cs-meta-label">Year</span>
+        <span class="cs-meta-value">2026</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── 00: THE GAME ── -->
+  <section class="section">
+    <div class="sec-label"><span class="sec-num">00</span>The game</div>
+    <div style="position:relative; width:100%; aspect-ratio:1/1; background:var(--panel); border:1px solid var(--border); border-radius:2px; overflow:hidden; margin:8px 0 24px;">
+      <iframe
+        src="https://rive.app/s/jttHPxPXwEaCTcb9OCbEkQ/embed?runtime=rive-renderer"
+        allow="autoplay; fullscreen"
+        frameborder="0"
+        style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+        title="POPP'EM &mdash; playable game">
+      </iframe>
+    </div>
+  </section>
+
+  <!-- ── 01: CONCEPT ── -->
+  <section class="section">
+    <div class="sec-label"><span class="sec-num">01</span>Concept</div>
+    <h2>The fate of humanity rests on a complexion.</h2>
+
+    <p class="lede">An evil AI has seized control of humanity. One agent stands between total subjugation and freedom. Her name is AGENT.</p>
+
+    <p>Before she can infiltrate the regime&rsquo;s final gala and end this once and for all, she has one problem: her skin is breaking out. That&rsquo;s where you come in.</p>
+
+    <p>POPP&rsquo;EM is a whack-a-mole style browser and mobile game built entirely in RIVE. Players have 59 seconds to pop enough pimples to help AGENT blend in at the event, because even in a dystopia, appearances matter.</p>
+
+    <div class="pullquote">
+      <p>The game is earnest about exactly one thing: saving the world. Everything else is negotiable.</p>
+    </div>
+
+    <p>The tone is deadpan throughout. The stakes are described with complete sincerity. The absurdity is never acknowledged. The character is named AGENT. These are the choices.</p>
+
+    <p>Tension before the game begins is handled by a fake loading screen, designed to let the opening exposition breathe and make players feel the weight of the mission before they&rsquo;re thrown into it. The loading screen does not load anything. That is the point.</p>
+  </section>
+
+  <!-- ── 02: BUILD ── -->
+  <section class="section">
+    <div class="sec-label"><span class="sec-num">02</span>Build</div>
+    <h2>Data Binding as game engine</h2>
+    <p>Every game system in POPP&rsquo;EM is driven by RIVE&rsquo;s Data Binding. No external scripting layer. No JavaScript game loop. The logic lives inside the file.</p>
+
+    <div class="binding-grid">
+      <div class="binding-card">
+        <div class="bc-tag">System 01</div>
+        <div class="bc-label">Game Clock</div>
+        <p>A 59-second countdown started and reset entirely through bound state. The clock drives the run and, when it expires, hands off to the result evaluation. The pressure is real.</p>
+      </div>
+      <div class="binding-card">
+        <div class="bc-tag">System 02</div>
+        <div class="bc-label">Score Tracking</div>
+        <p>Each pimple popped increments a bound score value in real time. The counter is visible throughout the run, giving the player a continuous read on their progress against the clock.</p>
+      </div>
+      <div class="binding-card">
+        <div class="bc-tag">System 03</div>
+        <div class="bc-label">Score-triggered SFX</div>
+        <p>Special sound effects fire at key score milestones via Data Binding conditionals. The audio rewards are tied to achievement thresholds, not to time, so skilled players hear the game differently.</p>
+      </div>
+      <div class="binding-card">
+        <div class="bc-tag">System 04</div>
+        <div class="bc-label">Win &amp; Fail Conditions</div>
+        <p>Pass and fail states are calculated from bound values at the end of the run. The outcome is evaluated, not scripted. AGENT either walks into the gala or she doesn&rsquo;t.</p>
+      </div>
+    </div>
+
+    <!-- Data Binding case study video -->
+    <div class="vimeo-wrap" style="margin: 28px 0;">
+      <iframe src="https://player.vimeo.com/video/1168624446?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="POPP'EM"></iframe>
+    </div>
+    <p class="vimeo-caption">Data Binding &mdash; case study video</p>
+
+    <div class="workflow">
+
+      <div class="wf-step">
+        <div class="wf-num">
+          <div class="wf-num-inner">1</div>
+          <div class="wf-line"></div>
+        </div>
+        <div class="wf-body">
+          <div class="wf-title">Art &mdash; Adobe Illustrator</div>
+          <div class="tools">
+            <span class="tool-pill blue">Adobe Illustrator</span>
+          </div>
+          <p>All game assets were built from scratch as vectors in Illustrator: the pimples, the face, the UI elements, the loading screen, the result states. The art is expressive and graphic, doing the tonal work the writing can&rsquo;t. Everything reads as serious. Nothing winks.</p>
+          <div class="asset-grid">
+            <div class="asset-wrap" style="position:relative; user-select:none; display:flex; flex-direction:column;" id="comparator-wrap">
+              <!-- Base: original copic drawing -->
+              <img
+                src="https://raw.githubusercontent.com/StudioDavidPreli/poppEm/main/facePre.png"
+                alt="Original copic marker drawing &mdash; facePre.png"
+                style="display:block; width:100%; height:auto;"
+                id="comp-base"
+                draggable="false">
+              <!-- Overlay: dithered SVG, clipped from top -->
+              <div id="comp-overlay" style="position:absolute; top:0; left:0; width:100%; overflow:hidden; pointer-events:none;">
+                <img
+                  src="https://raw.githubusercontent.com/StudioDavidPreli/poppEm/main/face.svg"
+                  alt="Dithered vector version &mdash; face.svg"
+                  style="display:block; width:100%; height:auto;"
+                  draggable="false">
+              </div>
+              <!-- Scrub bar -->
+              <div id="comp-bar" style="
+                position:absolute; left:0; right:0;
+                height:1px; background:#5D74B3;
+                cursor:ns-resize; z-index:10;
+                top:50%;
+              ">
+                <div style="
+                  position:absolute; left:50%; transform:translateX(-50%);
+                  top:-12px;
+                  background:#5D74B3; color:#141414;
+                  font-family:'IBM Plex Mono',monospace;
+                  font-size:8px; letter-spacing:1.5px; text-transform:uppercase;
+                  padding:3px 8px; border-radius:2px; white-space:nowrap;
+                  pointer-events:none;
+                ">drag to compare</div>
+              </div>
+              <!-- Label: vector -->
+              <div style="position:absolute; top:8px; left:10px; font-family:'IBM Plex Mono',monospace; font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:#5D74B3; opacity:0.7; pointer-events:none;">vector</div>
+              <div class="asset-caption" style="position:relative; z-index:20;">face.svg &mdash; drag bar to compare original &amp; vector</div>
+            </div>
+            <div class="asset-wrap">
+              <img src="https://raw.githubusercontent.com/StudioDavidPreli/poppEm/main/zit.gif" alt="Animated zit &mdash; core game element from POPP'EM" loading="lazy">
+              <div class="asset-caption">zit.gif &mdash; the main antagonist</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="wf-step">
+        <div class="wf-num">
+          <div class="wf-num-inner">2</div>
+          <div class="wf-line"></div>
+        </div>
+        <div class="wf-body">
+          <div class="wf-title">Game logic &mdash; RIVE</div>
+          <div class="tools">
+            <span class="tool-pill blue">RIVE</span>
+            <span class="tool-pill blue">Data Binding</span>
+            <span class="tool-pill blue">State Machine</span>
+          </div>
+          <p>Vectors were imported into RIVE and animated. The state machine manages pimple visibility, pop animations, idle states, and the transition between the loading screen, the game, and the result. Data Binding wires the clock, score, SFX triggers, and win condition logic into a single reactive graph.</p>
+          <p>The fake loading screen is its own state, held for a fixed duration before releasing into play. The pause is not accidental. It is the mission briefing.</p>
+          <div class="vimeo-wrap">
+            <iframe src="https://player.vimeo.com/video/1179093437?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="State Machines &mdash; POPP'EM"></iframe>
+          </div>
+          <p class="vimeo-caption">State machine &mdash; RIVE editor viewport</p>
+        </div>
+      </div>
+
+      <div class="wf-step">
+        <div class="wf-num">
+          <div class="wf-num-inner">3</div>
+          <div class="wf-line"></div>
+        </div>
+        <div class="wf-body">
+          <div class="wf-title">Audio &mdash; Apple Logic Pro</div>
+          <div class="tools">
+            <span class="tool-pill purple">Apple Logic Pro</span>
+          </div>
+          <p>All music was composed and produced in Logic Pro. The score sits underneath the action without demanding attention &mdash; it maintains the mood of low-grade existential dread appropriate to a planet under AI occupation. The sound design rewards both progress and failure in kind.</p>
+          <p>The &ldquo;pop&rdquo; sound effect was contributed by Joey at School of Motion. It is the most important sound in the game. Special thanks.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── 03: PHILOSOPHY ── -->
+  <section class="section">
+    <div class="sec-label"><span class="sec-num">03</span>Philosophy</div>
+    <h2>The joke only works if no one laughs.</h2>
+
+    <p class="lede">The absurdity of the premise is treated as fact. The fiction holds.</p>
+
+    <p>POPP&rsquo;EM is a game about stakes. The stakes happen to be ridiculous, but they are never presented that way. AGENT is a real operative. The gala is a real mission. The pimples are a real problem. The player is the only one who sees the humor, and only because the game refuses to share it.</p>
+
+    <p>This is a deliberate compositional choice. Deadpan is not the absence of a point of view. It is a very specific one: a commitment to the bit so total that the gap between the gravity of the delivery and the absurdity of the content becomes the content. The game does not tell you it&rsquo;s funny. It tells you the world is ending.</p>
+
+    <div class="pullquote">
+      <p>The loading screen does the most work. It holds. It waits. It takes the mission seriously so the player has to decide whether they do too.</p>
+    </div>
+
+    <p>Mechanically, POPP&rsquo;EM is a solved genre. Whack-a-mole is one of the oldest interaction patterns in games. The choice to use it here is not naive &mdash; it is load-bearing. The simplicity of the loop keeps the player from thinking about anything except the clock and the face. Which is, more or less, the situation AGENT is in.</p>
+  </section>
+
+  <!-- ── 04: RECOGNITION ── -->
+  <section class="section">
+    <div class="sec-label"><span class="sec-num">04</span>Recognition</div>
+    <h2>Contra homepage feature</h2>
+
+    <div class="recognition">
+      <div class="rec-indicator"></div>
+      <div class="rec-body">
+        <div class="rec-label">Contra &mdash; Homepage Feature &mdash; 2026</div>
+        <p>POPP&rsquo;EM was selected as a featured project on the Contra homepage following its submission to the RIVE Game Challenge. AGENT saved the world. The complexion held.</p>
+      </div>
+    </div>
+
+    <p>The game was submitted to the <a href="https://contra.com" target="_blank">Contra</a> RIVE Game Challenge as a browser and mobile experience. The submission was accompanied by a documentation video covering the game&rsquo;s features, fiction, and Data Binding implementation.</p>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="cs-footer">
+    <p>Studio David Preli &mdash; <a href="https://davidpreli.com">davidpreli.com</a></p>
+    <p>&ldquo;Pop&rdquo; SFX: Joey at <a href="https://www.schoolofmotion.com" target="_blank">School of Motion</a></p>
+  </footer>
+
+</div>
+
+<script>
+// ── Before/after vertical comparator ──
+(function() {
+  var wrap = document.getElementById('comparator-wrap');
+  var overlay = document.getElementById('comp-overlay');
+  var bar = document.getElementById('comp-bar');
+  if (!wrap || !overlay || !bar) return;
+
+  var dragging = false;
+
+  function setPosition(clientY) {
+    var rect = wrap.getBoundingClientRect();
+    var y = Math.max(0, Math.min(clientY - rect.top, rect.height));
+    var pct = (y / rect.height) * 100;
+    bar.style.top = pct + '%';
+    overlay.style.height = pct + '%';
+  }
+
+  // Initialize at 50%
+  overlay.style.height = '50%';
+
+  bar.addEventListener('mousedown', function(e) { dragging = true; e.preventDefault(); });
+  wrap.addEventListener('mousedown', function(e) { dragging = true; setPosition(e.clientY); e.preventDefault(); });
+  window.addEventListener('mousemove', function(e) { if (dragging) setPosition(e.clientY); });
+  window.addEventListener('mouseup', function() { dragging = false; });
+
+  // Touch
+  bar.addEventListener('touchstart', function(e) { dragging = true; e.preventDefault(); }, { passive: false });
+  wrap.addEventListener('touchstart', function(e) { dragging = true; setPosition(e.touches[0].clientY); e.preventDefault(); }, { passive: false });
+  window.addEventListener('touchmove', function(e) { if (dragging) setPosition(e.touches[0].clientY); }, { passive: true });
+  window.addEventListener('touchend', function() { dragging = false; });
+})();
+</script>
+
+<script>
+window.addEventListener('message', function(e) {
+  if (e.data && e.data.type === 'resize') {
+    var frame = document.getElementById('popem-cs-frame');
+    if (frame) frame.style.height = (e.data.height + 200) + 'px';
+  }
+});
+
+function reportHeight() {
+  var h = Math.max(
+    document.body.scrollHeight,
+    document.body.offsetHeight,
+    document.documentElement.scrollHeight,
+    document.documentElement.offsetHeight
+  );
+  window.parent.postMessage({ type: 'resize', height: h }, '*');
+}
+
+reportHeight();
+window.addEventListener('load', reportHeight);
+setTimeout(reportHeight, 500);
+setTimeout(reportHeight, 1500);
+setTimeout(reportHeight, 4000);
+</script>
+<script src="https://player.vimeo.com/api/player.js"></script>
+</body>
+</html>
