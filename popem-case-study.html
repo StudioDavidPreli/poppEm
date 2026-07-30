@@ -128,7 +128,7 @@ a:hover { text-decoration: underline; }
 
 /* ── Live game (poster → click-to-load facade) ──
    The Rive runtime is third-party WASM, so it must not boot at page load. The
-   resting state is a static poster — which also satisfies reduced motion (no
+   resting state is a static poster: which also satisfies reduced motion (no
    autoplay); a click injects the rive.app iframe. Mirrors the Vimeo/p5 facade. */
 .game-embed { position: relative; width: 100%; aspect-ratio: 1/1; background: var(--panel); border: 1px solid var(--border); border-radius: 2px; overflow: hidden; margin: 8px 0 24px; }
 .game-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
@@ -224,22 +224,22 @@ a:hover { text-decoration: underline; }
       <p>The game is earnest about exactly one thing: saving the world. Everything else is negotiable.</p>
     </div>
 
-    <p>The tone is deadpan throughout. The stakes are described with complete sincerity. The absurdity is never acknowledged. The character is named AGENT. These are the choices.</p>
+    <p>The stakes are described with complete sincerity, the absurdity goes unacknowledged, and the character is named AGENT.</p>
 
-    <p>Tension before the game begins is handled by a fake loading screen, designed to let the opening exposition breathe and make players feel the weight of the mission before they&rsquo;re thrown into it. The loading screen does not load anything. That is the point.</p>
+    <p>Tension before the game begins is handled by a fake loading screen, designed to let the opening exposition breathe and make players feel the weight of the mission before they&rsquo;re thrown into it. The loading screen does not load anything.</p>
   </section>
 
   <!-- ── 02: BUILD ── -->
   <section class="section">
     <div class="sec-label"><span class="sec-num">02</span>Build</div>
     <h2>Data Binding as game engine</h2>
-    <p>Every game system in POPP&rsquo;EM is driven by RIVE&rsquo;s Data Binding. No external scripting layer. No JavaScript game loop. The logic lives inside the file.</p>
+    <p>Every game system in POPP&rsquo;EM is driven by RIVE&rsquo;s Data Binding: no external scripting layer, no JavaScript game loop. The logic lives inside the file.</p>
 
     <div class="binding-grid">
       <div class="binding-card">
         <div class="bc-tag">System 01</div>
         <div class="bc-label">Game Clock</div>
-        <p>A 59-second countdown started and reset entirely through bound state. The clock drives the run and, when it expires, hands off to the result evaluation. The pressure is real.</p>
+        <p>A 59-second countdown started and reset entirely through bound state. The clock drives the run and, when it expires, hands off to the result evaluation.</p>
       </div>
       <div class="binding-card">
         <div class="bc-tag">System 02</div>
@@ -276,7 +276,7 @@ a:hover { text-decoration: underline; }
           <div class="tools">
             <span class="tool-pill blue">Adobe Illustrator</span>
           </div>
-          <p>All game assets were built from scratch as vectors in Illustrator: the pimples, the face, the UI elements, the loading screen, the result states. The art is expressive and graphic, doing the tonal work the writing can&rsquo;t. Everything reads as serious. Nothing winks.</p>
+          <p>All game assets were built from scratch as vectors in Illustrator: the pimples, the face, the UI elements, the loading screen, the result states. The art is expressive and graphic, doing the tonal work the writing can&rsquo;t. Everything reads as serious; nothing winks.</p>
           <div class="asset-grid">
             <div class="asset-wrap" style="position:relative; user-select:none; display:flex; flex-direction:column;" id="comparator-wrap">
               <!-- Base: original copic drawing -->
@@ -336,7 +336,7 @@ a:hover { text-decoration: underline; }
             <span class="tool-pill blue">State Machine</span>
           </div>
           <p>Vectors were imported into RIVE and animated. The state machine manages pimple visibility, pop animations, idle states, and the transition between the loading screen, the game, and the result. Data Binding wires the clock, score, SFX triggers, and win condition logic into a single reactive graph.</p>
-          <p>The fake loading screen is its own state, held for a fixed duration before releasing into play. The pause is not accidental. It is the mission briefing.</p>
+          <p>The fake loading screen is its own state, held for a fixed duration before releasing into play. The pause is the mission briefing.</p>
           <div class="vimeo-wrap">
             <iframe src="https://player.vimeo.com/video/1179093437?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" title="State Machines &mdash; POPP'EM"></iframe>
           </div>
@@ -354,7 +354,7 @@ a:hover { text-decoration: underline; }
           <div class="tools">
             <span class="tool-pill purple">Apple Logic Pro</span>
           </div>
-          <p>All music was composed and produced in Logic Pro. The score sits underneath the action without demanding attention. It maintains the mood of low-grade existential dread appropriate to a planet under AI occupation. The sound design rewards both progress and failure in kind.</p>
+          <p>All music was composed and produced in Logic Pro. The score sits underneath the action without demanding attention, maintaining the mood of low-grade existential dread appropriate to a planet under AI occupation. The sound design rewards both progress and failure in kind.</p>
           <p>The &ldquo;pop&rdquo; sound effect was contributed by Joey at School of Motion. It is the most important sound in the game. Special thanks.</p>
         </div>
       </div>
@@ -367,23 +367,20 @@ a:hover { text-decoration: underline; }
     <div class="sec-label"><span class="sec-num">03</span>Philosophy</div>
     <h2>The joke only works if no one laughs.</h2>
 
-    <p class="lede">The absurdity of the premise is treated as fact. The fiction holds.</p>
+    <p>POPP&rsquo;EM is a game about stakes. The stakes happen to be ridiculous, but they are never presented that way. AGENT is a real operative, the gala is a real mission, and the pimples are a real problem. The player is the only one who sees the humor, and only because the game refuses to share it.</p>
 
-    <p>POPP&rsquo;EM is a game about stakes. The stakes happen to be ridiculous, but they are never presented that way. AGENT is a real operative. The gala is a real mission. The pimples are a real problem. The player is the only one who sees the humor, and only because the game refuses to share it.</p>
-
-    <p>This is a deliberate compositional choice. Deadpan is not the absence of a point of view. It is a very specific one: a commitment to the bit so total that the gap between the gravity of the delivery and the absurdity of the content becomes the content. The game does not tell you it&rsquo;s funny. It tells you the world is ending.</p>
+    <p>Deadpan is a point of view: a commitment to the bit so total that the gap between the gravity of the delivery and the absurdity of the content becomes the content. The game does not tell you it&rsquo;s funny. It tells you the world is ending.</p>
 
     <div class="pullquote">
-      <p>The loading screen does the most work. It holds. It waits. It takes the mission seriously so the player has to decide whether they do too.</p>
+      <p>The loading screen does the most work. It holds and waits, taking the mission seriously so the player has to decide whether they do too.</p>
     </div>
 
-    <p>Mechanically, POPP&rsquo;EM is a solved genre. Whack-a-mole is one of the oldest interaction patterns in games. The choice to use it here is not naive. It is load-bearing. The simplicity of the loop keeps the player from thinking about anything except the clock and the face. Which is, more or less, the situation AGENT is in.</p>
+    <p>Mechanically, whack-a-mole is one of the oldest interaction patterns in games, and that simplicity is load-bearing: the loop keeps the player from thinking about anything except the clock and the face. Which is, more or less, the situation AGENT is in.</p>
   </section>
 
   <!-- ── 04: RECOGNITION ── -->
   <section class="section">
     <div class="sec-label"><span class="sec-num">04</span>Recognition</div>
-    <h2>Contra homepage feature</h2>
 
     <div class="recognition">
       <div class="rec-indicator"></div>
@@ -393,7 +390,7 @@ a:hover { text-decoration: underline; }
       </div>
     </div>
 
-    <p>The game was submitted to the <a href="https://contra.com" target="_blank">Contra</a> RIVE Game Challenge as a browser and mobile experience. The submission was accompanied by a documentation video covering the game&rsquo;s features, fiction, and Data Binding implementation.</p>
+    <p>The game was submitted to the <a href="https://contra.com" target="_blank">Contra</a> RIVE Game Challenge as a browser and mobile experience, accompanied by a documentation video covering the game&rsquo;s features, fiction, and Data Binding implementation.</p>
   </section>
 
   <!-- ── FOOTER ── -->
